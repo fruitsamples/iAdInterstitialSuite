@@ -8,7 +8,7 @@ iAdInterstitialSuite demonstrates how to use ADInterstitialAd in two common scen
 "ADGame" is a simple game that displays an ADInterstitialAd when the game is complete, if one is available, using presentFromViewController:. ADGame will create an interstitial as early as possible to attempt to ensure that an interstitial is available when the game completes, but if one is not available it will continue on to a new game.
 
 Build Requirements
-iOS 4.3 SDK
+Latest iOS SDK
 
 Runtime Requirements
 iOS 4.3 SDK or later.
@@ -16,5 +16,6 @@ iOS 4.3 SDK or later.
 Changes from Previous Versions
 1.0 - First release
 1.1 - Revisions for API updates and bug fixes.
+1.2 - Fixed layout issues when rotating the device while the ad unit was displayed.
 
 Copyright (C) 2010-2011 Apple Inc. All rights reserved.

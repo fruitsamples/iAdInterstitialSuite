@@ -1,7 +1,7 @@
 /*
     File: GameViewController.m
 Abstract: Main view controller for ADGame
- Version: 1.1
+ Version: 1.2
 
 Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
 Inc. ("Apple") in consideration of your agreement to the following
@@ -41,7 +41,7 @@ AND WHETHER UNDER THEORY OF CONTRACT, TORT (INCLUDING NEGLIGENCE),
 STRICT LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
-Copyright (C) 2011 Apple Inc. All Rights Reserved.
+Copyright (C) 2012 Apple Inc. All Rights Reserved.
 
 */
 
@@ -147,10 +147,12 @@ enum {
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    // If a player has won, then layout for the interlude, otherwise layout for the game.
-    if (gamePhase < ADGameWon) {
-        [self layoutGame];
-    }
+    [self layoutGame];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [self layoutGame];
 }
 
 #pragma mark -
@@ -312,9 +314,9 @@ enum {
     scoreView.shape = [self scorePath];
     titleLabel.text = @"Thumb Wars!";
     titleLabel.hidden = NO;
-    [self layoutGame];
     gamePhase = ADGameWaiting;
     gameWinner = 0;
+    [self layoutGame];
 }
 
 - (void)resetGameSoon
@@ -325,13 +327,22 @@ enum {
 
 - (void)layoutGame
 {
-    CGRect bounds = self.view.bounds;
-    player1.center = CGPointMake(CGRectGetMidX(bounds), 56.0);
-    player2.center = CGPointMake(56.0, CGRectGetMidY(bounds));
-    player3.center = CGPointMake(CGRectGetMidX(bounds), CGRectGetMaxY(bounds) - 56.0);
-    player4.center = CGPointMake(CGRectGetMaxX(bounds) - 56.0, CGRectGetMidY(bounds));
-    scoreView.shape = [self scorePath];
-    titleLabel.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
+    if (gamePhase < ADGameWon) {
+        CGRect bounds = self.view.bounds;
+        player1.center = CGPointMake(CGRectGetMidX(bounds), 56.0);
+        player2.center = CGPointMake(56.0, CGRectGetMidY(bounds));
+        player3.center = CGPointMake(CGRectGetMidX(bounds), CGRectGetMaxY(bounds) - 56.0);
+        player4.center = CGPointMake(CGRectGetMaxX(bounds) - 56.0, CGRectGetMidY(bounds));
+        scoreView.shape = [self scorePath];
+        titleLabel.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
+    } else {
+        titleLabel.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(titleLabel.bounds));
+        titleLabel.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(titleLabel.bounds));
+        player1.center = CGPointMake(player1.center.x, player1.center.y + 1024.0);
+        player2.center = CGPointMake(player2.center.x + 1024.0, player2.center.y);
+        player3.center = CGPointMake(player3.center.x, player3.center.y - 1024.0);
+        player4.center = CGPointMake(player4.center.x - 1024.0, player4.center.y);
+    }
 }
 
 #pragma mark -
